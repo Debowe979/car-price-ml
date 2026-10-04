@@ -1,0 +1,11 @@
+pandas==3.0.6
+numpy==2.5.3
+scikit-learn==1.9.1
+catboost==1.2.10
+fastapi
+uvicorn[standard]
+sqlalchemy==2.0.54
+psycopg2-binary==2.9.13
+pyarrow==25.0.1
+python-dotenv==1.2.3
+requests==2.34.2

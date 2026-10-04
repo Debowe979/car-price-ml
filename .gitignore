@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Env secrets
+.env
+
+# Data (большие файлы)
+data/
+*.parquet
+*.csv
+
+# Models (большие файлы)
+models/*.cbm
+models/*.pkl
+models/*.joblib
+
+# CatBoost / ML артефакты
+catboost_info/
+reports/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Временные тесты
+test.py
+test_2.py
+test_3.py
+test_api.py
