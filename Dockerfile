@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir -r requirements-docker.txt
 COPY src/ ./src/
 COPY models/ ./models/
 COPY data/raw/cars.parquet ./data/raw/cars.parquet
+COPY app.py ./app.py 
 
 # порт API
 EXPOSE 8000
