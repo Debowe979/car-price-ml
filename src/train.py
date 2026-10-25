@@ -70,6 +70,31 @@ def main():
     (MODELS_DIR / "cat_features.json").write_text(json.dumps(cat_f))
     print(f"[save] metadata -> {MODELS_DIR}")
 
+    print(f"\n[conformal] q_hat = {q_hat:.5f}, coverage = {cov:.3f}")
+    # --- НОВЫЙ БЛОК: Обучение классификатора уверенности ---
+    from catboost import CatBoostClassifier
+
+    print("\n[train] confidence classifier")
+    # Считаем, попали ли квантили в правду (с учетом q_hat)
+    q10_cal_adj = q10_cal - q_hat
+    q90_cal_adj = q90_cal + q_hat
+    covered = ((y_cal.values >= q10_cal_adj) & (y_cal.values <= q90_cal_adj)).astype(int)
+
+    # Готовим фичи для классификатора: фичи машины + предсказания квантилей + ширина
+    X_conf = X_cal[features].copy()
+    X_conf["q10_log"] = q10_cal_adj
+    X_conf["q50_log"] = models[0.5].predict(X_cal[features])
+    X_conf["q90_log"] = q90_cal_adj
+    X_conf["width_log"] = X_conf["q90_log"] - X_conf["q10_log"]
+
+    conf_model = CatBoostClassifier(
+        iterations=500, learning_rate=0.05, depth=6,
+        cat_features=cat_f, random_seed=42, verbose=100,
+    )
+    conf_model.fit(X_conf, covered)
+    conf_model.save_model(str(MODELS_DIR / "confidence.cbm"))
+    print(f"[save] confidence.cbm -> {MODELS_DIR}")
+    
 
 if __name__ == "__main__":
     main()
