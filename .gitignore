@@ -24,7 +24,8 @@ models/*.joblib
 
 # CatBoost / ML артефакты
 catboost_info/
-reports/
+reports/*
+!reports/*.png
 *.log
 
 # IDE
